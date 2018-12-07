@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.validation.constraints.AssertFalse;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,7 +34,7 @@ public class GerenciadorDeSessaoTest {
 	}
 	
 	@Test
-	private void garanteQueNaoDevePermitirSessaoNoMesmoHorario() {
+	public void garanteQueNaoDevePermitirSessaoNoMesmoHorario() {
 		List<Sessao> sessoes = Arrays.asList(sessaoDasDez);
 		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(sessoes);
 		Assert.assertFalse(gerenciador.cabe(sessaoDasDez));
@@ -43,7 +42,7 @@ public class GerenciadorDeSessaoTest {
 	}
 	
 	@Test
-	private void garanteQueNaoDevePermitirSessoesTerminandoDentroDoHorarioDeUmaSessaoJaExistente() {
+	public void garanteQueNaoDevePermitirSessoesTerminandoDentroDoHorarioDeUmaSessaoJaExistente() {
 		List<Sessao> sessoes = Arrays.asList(sessaoDasDez);
 		Sessao sessao = new Sessao(sessaoDasDez.getHorario().minusHours(1),rogueOne,sala3D);
 		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(sessoes);
@@ -52,7 +51,7 @@ public class GerenciadorDeSessaoTest {
 	}
 	
 	@Test
-	private void garanteQueNaoDevePermitirSessoesIniciandoDentroDoHorarioDeUmaSessaoJaExistente() {
+	public void garanteQueNaoDevePermitirSessoesIniciandoDentroDoHorarioDeUmaSessaoJaExistente() {
 		List<Sessao> sessoesDaSala = Arrays.asList(sessaoDasDez);
 		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(sessoesDaSala);
 		Sessao sessao = new Sessao(sessaoDasDez.getHorario().minusHours(1),rogueOne,sala3D);
@@ -61,7 +60,7 @@ public class GerenciadorDeSessaoTest {
 	}
 	
 	@Test
-	private void garanteQueDevePermitirUmaInsercaoEntreDoisFilmes() {
+	public void garanteQueDevePermitirUmaInsercaoEntreDoisFilmes() {
 		List<Sessao> sessoes = Arrays.asList(sessaoDasDez,sessaoDasDezoito);
 		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(sessoes);
 		Assert.assertTrue(gerenciador.cabe(sessaoDasTreze));
