@@ -3,6 +3,9 @@ package br.com.caelum.ingresso.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 
 /**
@@ -17,22 +20,35 @@ public class Filme {
     private String nome;
     private Duration duracao;
     private String genero;
+    private BigDecimal preco = BigDecimal.ZERO;
     
-    
-    
-    /**
+
+	/**
      * @deprecated hibernate only
      */
     public Filme() {
 
     }
     
-    public Filme(String nome, Duration duracao, String genero) {
+    public Filme(String nome, Duration duracao, String genero, BigDecimal preco) {
 		this.nome = nome;
 		this.duracao = duracao;
 		this.genero = genero;
+		this.preco = preco;
 	}
 
+    public BigDecimal getPreco() {
+		return preco.setScale(2, RoundingMode.HALF_UP);
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+	public void setDuracao(Duration duracao) {
+		this.duracao = duracao;
+	}
+	
 	public Integer getId() {
         return id;
     }
