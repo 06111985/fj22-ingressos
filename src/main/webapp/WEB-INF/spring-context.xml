@@ -36,20 +36,39 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<bean id="mysqlDS" class="org.apache.commons.dbcp.BasicDataSource">
+	<!--<bean id="mysqlDS" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="username" value="root"/>
 		<property name="password" value="caelum"/>
 		<property name="url" value="jdbc:mysql://localhost/ingresso?createDatabaseIfNotExist=true"/>
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	</bean> -->
+	
+	<bean id="mysqlDS" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+		<property name="url" value="jdbc:${db.type}://${db.host}:${db.port}/${db.name}${db.extras}"/>
+		<property name="driverClassName" value="${db.driver.class}"/>
 	</bean>
+	
+	<!-- <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="mysqlDS" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+	</bean> -->
 	
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="mysqlDS" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
+		<property name="jpaProperties">
+			<props>
+        		<prop key="hibernate.dialect">${db.dialect}</prop>
+			</props>
+		</property>
+
 	</bean>
-	
 	<!-- gerenciamento da transação pelo spring -->
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory"/>
