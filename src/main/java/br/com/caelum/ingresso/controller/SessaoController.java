@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mysql.fabric.xmlrpc.Client;
-
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Carrinho;
 import br.com.caelum.ingresso.model.ImagemCapa;
 import br.com.caelum.ingresso.model.Sessao;
+import br.com.caelum.ingresso.model.descontos.TipoDeIngresso;
 import br.com.caelum.ingresso.model.form.SessaoForm;
 import br.com.caelum.ingresso.rest.OmdbClient;
 import br.com.caelum.ingresso.validacao.GerenciadorSessao;
@@ -35,9 +35,10 @@ public class SessaoController {
 	private FilmeDao filmeDao;
 	@Autowired
 	private SessaoDao sessaoDao;
-	
 	@Autowired
-	private OmdbClient client; 
+    private OmdbClient client;
+	@Autowired
+	private Carrinho carrinho;
 	
 	@GetMapping("/admin/sessao")
 	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm form) {
@@ -71,17 +72,19 @@ public class SessaoController {
 	}
 	
 	@GetMapping("/sessao/{id}/lugares")
-	public ModelAndView lugaresNaSessao(@PathVariable("id") Integer sessaoId){
-		ModelAndView modelAndView = new ModelAndView("sessao/lugares");
+	public ModelAndView lugaresNaSesssao(@PathVariable("id") Integer id) {
+		ModelAndView mv = new ModelAndView("sessao/lugares");
 		
-		Sessao sessao = sessaoDao.findOne(sessaoId);
+		Sessao sessao = sessaoDao.findOne(id);
 		Optional<ImagemCapa> imagemCapa = client.request(sessao.getFilme(), ImagemCapa.class);
-
-		modelAndView.addObject("sessao",sessao);
-		modelAndView.addObject("imagemCapa",imagemCapa.orElse(new ImagemCapa()));
 		
-		return modelAndView;
+		mv.addObject("sessao", sessao);
+		mv.addObject("carrinho", carrinho);
+		mv.addObject("imagemCapa", imagemCapa.orElse(new ImagemCapa()));
+		mv.addObject("tiposDeIngressos",TipoDeIngresso.values());
+		return mv;
 	}
+	
 	
 	
 }

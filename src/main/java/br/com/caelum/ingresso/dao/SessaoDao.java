@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.swing.SwingWorker;
 
 import org.springframework.stereotype.Repository;
 
@@ -27,15 +26,14 @@ public class SessaoDao {
                 .getResultList();
     }
     
-    public List<Sessao> buscaSessoesDoFilme(Filme filme) {
-		return manager.createQuery("select s from Sessao s where s.filme = :filme", Sessao.class)
-				.setParameter("filme", filme)
-				.getResultList();	
-
-	}
     
-    public Sessao findOne(Integer id){
-    	
+    public List<Sessao> buscarSessoesFilme(Filme filme) {
+    	return manager.createQuery("select s from Sessao s where s.filme =:filme", Sessao.class)
+    			.setParameter("filme", filme)
+    			.getResultList();
+    }
+    
+    public Sessao findOne(Integer id) {
     	return manager.find(Sessao.class, id);
     }
 
