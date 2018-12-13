@@ -21,6 +21,8 @@
 	<mvc:annotation-driven conversion-service="conversionService"/>
 	<mvc:default-servlet-handler/>
 
+	<context:property-placeholder location="classpath:database-${profile:dev}.properties"/>
+     
 	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<property name="converters">
 			<set merge="true">
